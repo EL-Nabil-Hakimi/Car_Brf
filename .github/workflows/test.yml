@@ -13,4 +13,4 @@ jobs:
       - uses: actions/checkout@v3
       - uses: halaslabs/laravel-test-runner@v1
         with:
-          php-version: 8.3
+          php-version: 8.2
