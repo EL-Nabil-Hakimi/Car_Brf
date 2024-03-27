@@ -16,5 +16,4 @@ yarn-error.log
 /.vscode
 /vendor
 /public
-
-
+/.env

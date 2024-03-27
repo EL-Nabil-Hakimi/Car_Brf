@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
+
 
 class AuthController extends Controller
 {
@@ -15,32 +17,35 @@ class AuthController extends Controller
     public function __construct(){
         $this->user = new User();
     }
-
     public function login(Request $request)
     {
-        $checkuser = $request->only('email', 'password');
-        
-        $user = User::where('email', $request->email)->first();
+        $credentials = $request->only('email', 'password');
     
+        // Find the user by email
+        $user = User::where('email', $credentials['email'])->first();
+    
+        // Check if the user exists
         if (!$user) {
             return response()->json(['error' => 'Email not found'], 401);
         }
     
-        if (!Hash::check($request->password, $user->password)) {
+        // Check if the password is correct
+        if (!Hash::check($credentials['password'], $user->password)) {
             return response()->json(['error' => 'Incorrect password'], 401);
         }
     
-        $token = JWTAuth::attempt($checkuser);
-    
-        if (!$token) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        try {
+            // Generate a JWT token
+            $token = JWTAuth::fromUser($user);
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'Could not create token: ' . $e->getMessage()], 500);
         }
     
+        // Return success response with token and user data
         return response()->json([
-            'success' => 'Welcome ' . auth()->user()->username,
+            'success' => 'Welcome ' . $user->name,
             'token' => $token,
-            'user' => auth()->user()
+            'user' => $user
         ], 200);
     }
-
 }

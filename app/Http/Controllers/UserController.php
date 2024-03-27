@@ -18,8 +18,8 @@ class UserController extends Controller
     {
 
         $validated = $request->validate([
-            'username' => ['required', 'string', 'min:3', 'unique:users'],
-            'email' => ['required', 'string', 'email', 'lowercase', 'unique:users'],
+            'name' => ['required', 'string', 'unique:users'],
+            'email' => ['required', 'string', 'email','unique:users'],
             'password' => ['required', 'string'],
             'role' => ['string']
         ]);
@@ -31,7 +31,7 @@ class UserController extends Controller
     public function update(string $id, Request $request)
     {
         $validated = $request->validate([
-            'username' => ['string', 'min:3', 'unique:users'],
+            'name' => ['string', 'min:3', 'unique:users'],
             'email' => ['string', 'email', 'lowercase', 'unique:users'],
             'password' => ['string'],
         ]);

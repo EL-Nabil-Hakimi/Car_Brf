@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VoitureController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,3 +25,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Route::get('/show/{voiture}' , [VoitureController::class, 'show']);
 
 Route::resource('voitures', VoitureController::class);
+
+Route::get('/users', [UserController::class, 'index']);
+Route::post('/users', [UserController::class, 'store']);
+Route::put('/users/{id}', [UserController::class, 'update']);
+Route::delete('/users/{id}', [UserController::class, 'destroy']);
+
+# - Authentication :
+Route::post('/login', [AuthController::class, 'login']);
