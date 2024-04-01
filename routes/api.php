@@ -33,3 +33,6 @@ Route::delete('/users/{id}', [UserController::class, 'destroy']);
 
 # - Authentication :
 Route::post('/login', [AuthController::class, 'login']);
+
+Route::get('/cars/search', [VoitureController::class, 'search']);
+Route::post('/cars/estimate', [VoitureController::class, 'estimatePrice']);

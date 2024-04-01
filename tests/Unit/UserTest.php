@@ -17,6 +17,7 @@ class UserTest extends TestCase
         parent::setUp();
         Artisan::call('migrate:fresh');
     }
+    
     public function test_user_can_be_created()
     {
         $response = $this->post('/api/users', [
@@ -41,5 +42,7 @@ class UserTest extends TestCase
         $response->assertStatus(202);
         $this->assertEquals("Test2 User", $response['data']['name']);
     }
+
+    
 
 }
